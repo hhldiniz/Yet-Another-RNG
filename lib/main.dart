@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yet_another_rng/pages/rng.dart';
+import 'package:yet_another_rng/providers/rng_bloc_provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Rng(),
+      home: RngBlocProvider(const Rng()),
     );
   }
 }
