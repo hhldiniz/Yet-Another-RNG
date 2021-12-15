@@ -16,9 +16,12 @@ class Rng extends StatefulWidget {
 
 class RngState extends State<Rng> {
   RngBloc? bloc;
+  final numberListItemSize = const Size(50, 50);
 
   @override
   Widget build(BuildContext context) {
+    ScrollController numberListScrollController = ScrollController();
+
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       bloc ??= RngBlocProvider.of(context).bloc;
     });
@@ -40,6 +43,14 @@ class RngState extends State<Rng> {
                       child: Number(snapshot.data?.numberText ?? "--"),
                       onTap: () {
                         bloc?.generateRandomNumber();
+                        if (bloc != null) {
+                          numberListScrollController.animateTo(
+                              numberListItemSize.width *
+                                      bloc!.rolledNumberList.length -
+                                  1,
+                              duration: const Duration(seconds: 2),
+                              curve: Curves.fastOutSlowIn);
+                        }
                       },
                     );
                   })
@@ -51,17 +62,29 @@ class RngState extends State<Rng> {
               StreamBuilder<NumberListPresentation>(
                 stream: bloc?.numberListStream,
                 builder: (context, snapshot) {
-                  return Container(
-                    width: 200,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: bloc?.rolledNumberList.length ?? 0,
-                        itemBuilder: (context, index) {
-                          var currentItem = snapshot.data?.numberList[index];
-                          return ListTile(
-                            title: Text(currentItem?.numberText ?? "--"),
-                          );
-                        }),
+                  final screenSize = MediaQuery.of(context).size;
+                  return SizedBox(
+                    width: screenSize.width,
+                    child: GridView.count(
+                      crossAxisCount: bloc != null
+                          ? (bloc?.rolledNumberList.length ?? 0) ~/
+                              numberListItemSize.width
+                          : 1,
+                      controller: numberListScrollController,
+                      scrollDirection: Axis.horizontal,
+                      children:
+                          bloc?.rolledNumberList.map((numberPresentation) {
+                                return SizedBox(
+                                  child: Number(
+                                    numberPresentation.numberText,
+                                    fontSize: 16,
+                                  ),
+                                  width: numberListItemSize.width,
+                                  height: numberListItemSize.height,
+                                );
+                              }).toList() ??
+                              [],
+                    ),
                   );
                 },
               )
