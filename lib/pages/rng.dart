@@ -65,19 +65,19 @@ class RngState extends State<Rng> {
                   final screenSize = MediaQuery.of(context).size;
                   return SizedBox(
                     width: screenSize.width,
+                    height: screenSize.height/2,
                     child: GridView.count(
-                      crossAxisCount: bloc != null
-                          ? (bloc?.rolledNumberList.length ?? 0) ~/
-                              numberListItemSize.width
-                          : 1,
+                      crossAxisCount: 6,
                       controller: numberListScrollController,
-                      scrollDirection: Axis.horizontal,
                       children:
                           bloc?.rolledNumberList.map((numberPresentation) {
                                 return SizedBox(
-                                  child: Number(
-                                    numberPresentation.numberText,
-                                    fontSize: 16,
+                                  child: Align(
+                                    alignment: Alignment.center,
+                                    child: Number(
+                                      numberPresentation.numberText,
+                                      fontSize: 16,
+                                    ),
                                   ),
                                   width: numberListItemSize.width,
                                   height: numberListItemSize.height,
