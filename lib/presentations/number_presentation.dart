@@ -1,5 +1,10 @@
 class NumberPresentation {
-  String numberText;
+  final int rolledNumber;
+  String? message;
 
-  NumberPresentation(this.numberText);
+  NumberPresentation(this.rolledNumber, {this.message});
+
+  String get numberText => rolledNumber < 10
+      ? "0" + rolledNumber.toString()
+      : rolledNumber.toString();
 }

@@ -37,7 +37,9 @@ class RngState extends State<Rng> {
                     return InkWell(
                       borderRadius:
                           const BorderRadius.all(Radius.circular(200)),
-                      child: Number(snapshot.data?.numberText ?? "--"),
+                      child: Number(snapshot.data?.message ??
+                          snapshot.data?.numberText ??
+                          "--"),
                       onTap: () {
                         bloc?.generateRandomNumber();
                         if (bloc != null) {
@@ -64,7 +66,6 @@ class RngState extends State<Rng> {
                           alignment: Alignment.center,
                           child: Number(
                             numberPresentation.numberText,
-                            fontSize: 16,
                           ),
                         ),
                         width: numberListItemSize.width,
