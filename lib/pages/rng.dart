@@ -21,10 +21,7 @@ class RngState extends State<Rng> {
   @override
   Widget build(BuildContext context) {
     ScrollController numberListScrollController = ScrollController();
-
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      bloc ??= RngBlocProvider.of(context).bloc;
-    });
+    bloc ??= RngBlocProvider.of(context).bloc;
 
     return Scaffold(
       backgroundColor: Colors.redAccent,
