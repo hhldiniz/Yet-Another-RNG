@@ -31,10 +31,7 @@ class RngState extends State<Rng> {
       body: Column(
         children: [
           Expanded(
-              child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              StreamBuilder<NumberPresentation>(
+              child: StreamBuilder<NumberPresentation>(
                   stream: bloc?.numberStream,
                   builder: (BuildContext context, snapshot) {
                     return InkWell(
@@ -53,42 +50,30 @@ class RngState extends State<Rng> {
                         }
                       },
                     );
-                  })
-            ],
-          )),
+                  })),
           Expanded(
-              child: Row(
-            children: [
-              StreamBuilder<NumberListPresentation>(
-                stream: bloc?.numberListStream,
-                builder: (context, snapshot) {
-                  final screenSize = MediaQuery.of(context).size;
-                  return SizedBox(
-                    width: screenSize.width,
-                    height: screenSize.height/2,
-                    child: GridView.count(
-                      crossAxisCount: 6,
-                      controller: numberListScrollController,
-                      children:
-                          bloc?.rolledNumberList.map((numberPresentation) {
-                                return SizedBox(
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Number(
-                                      numberPresentation.numberText,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  width: numberListItemSize.width,
-                                  height: numberListItemSize.height,
-                                );
-                              }).toList() ??
-                              [],
-                    ),
-                  );
-                },
-              )
-            ],
+              child: StreamBuilder<NumberListPresentation>(
+            stream: bloc?.numberListStream,
+            builder: (context, snapshot) {
+              return GridView.count(
+                crossAxisCount: 6,
+                controller: numberListScrollController,
+                children: bloc?.rolledNumberList.map((numberPresentation) {
+                      return SizedBox(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Number(
+                            numberPresentation.numberText,
+                            fontSize: 16,
+                          ),
+                        ),
+                        width: numberListItemSize.width,
+                        height: numberListItemSize.height,
+                      );
+                    }).toList() ??
+                    [],
+              );
+            },
           ))
         ],
       ),
