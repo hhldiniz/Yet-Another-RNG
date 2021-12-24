@@ -44,6 +44,12 @@ class RngBloc extends BaseBloc {
     }
   }
 
+  reset() {
+    _numberController.sink.add(InitState("Toque para sortear um número."));
+    rolledNumberList.clear();
+    _numberListController.sink.add(NumberListPresentation(rolledNumberList));
+  }
+
   @override
   void dispose() {
     _numberController.close();

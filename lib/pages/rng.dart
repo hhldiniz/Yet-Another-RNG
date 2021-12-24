@@ -37,6 +37,11 @@ class RngState extends State<Rng> {
 
     return Scaffold(
       backgroundColor: Colors.redAccent,
+      appBar: AppBar(actions: [
+        IconButton(onPressed: (){
+          bloc?.reset();
+        }, icon: const Icon(Icons.refresh))
+      ],),
       body: Column(
         children: [
           Expanded(
