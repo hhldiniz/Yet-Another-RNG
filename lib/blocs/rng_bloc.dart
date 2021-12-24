@@ -4,10 +4,11 @@ import 'dart:math';
 import 'package:yet_another_rng/blocs/base_bloc.dart';
 import 'package:yet_another_rng/presentations/number_list_presentation.dart';
 import 'package:yet_another_rng/presentations/number_presentation.dart';
+import 'package:yet_another_rng/states/rolled_number_state.dart';
 
 class RngBloc extends BaseBloc {
-  final StreamController<NumberPresentation> _numberController =
-      StreamController<NumberPresentation>();
+  final StreamController<RolledNumberState> _numberController =
+      StreamController<RolledNumberState>();
 
   final StreamController<NumberListPresentation> _numberListController =
       StreamController<NumberListPresentation>();
@@ -16,24 +17,25 @@ class RngBloc extends BaseBloc {
 
   final int maxRolledNumbers = 100;
 
-  Stream<NumberPresentation> get numberStream => _numberController.stream;
+  Stream<RolledNumberState> get numberStream => _numberController.stream;
 
   Stream<NumberListPresentation> get numberListStream =>
       _numberListController.stream;
 
+  RngBloc() {
+    _numberController.sink.add(InitState("Toque para sortear um número."));
+  }
+
   generateRandomNumber() {
-    NumberPresentation numberPresentation;
     if (rolledNumberList.length == maxRolledNumbers) {
-      numberPresentation =
-          NumberPresentation(0, message: "Todos já foram sorteados.");
-      _numberController.sink.add(numberPresentation);
+      _numberController.sink.add(ErrorState("Todos já foram sorteados."));
     } else {
       var randomNumber = Random().nextInt(maxRolledNumbers);
       var foundNumber = rolledNumberList.advancedContains(
               (NumberPresentation element) => element.rolledNumber == randomNumber);
       if (foundNumber == null) {
-        numberPresentation = NumberPresentation(randomNumber);
-        _numberController.sink.add(numberPresentation);
+        var numberPresentation = NumberPresentation(randomNumber);
+        _numberController.sink.add(SuccessState(numberPresentation));
         rolledNumberList.add(numberPresentation);
         _numberListController.sink.add(NumberListPresentation(rolledNumberList));
       } else {
