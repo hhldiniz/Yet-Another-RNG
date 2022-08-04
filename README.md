@@ -1,3 +1,3 @@
-# yet_another_rng
+# Yet Another RNG
 
 A simple random number generator made with Flutter.
