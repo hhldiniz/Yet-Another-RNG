@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:yet_another_rng/blocs/settings_bloc.dart';
 import 'package:yet_another_rng/providers/settings_bloc_provider.dart';
 
@@ -57,7 +55,7 @@ class SettingPageState extends State<SettingsPage> {
                   },
                   child: const Text("OK")),
             ),
-            alignment: Alignment.bottomRight,
+            alignment: Alignment.bottomCenter,
           ))
         ],
       )),

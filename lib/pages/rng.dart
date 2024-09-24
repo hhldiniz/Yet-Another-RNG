@@ -7,6 +7,8 @@ import 'package:yet_another_rng/providers/settings_bloc_provider.dart';
 import 'package:yet_another_rng/states/rolled_number_state.dart';
 import 'package:yet_another_rng/widgets/number.dart';
 
+import '../widgets/number_state_info.dart';
+
 class Rng extends StatefulWidget {
   const Rng({Key? key}) : super(key: key);
 
@@ -16,19 +18,19 @@ class Rng extends StatefulWidget {
   }
 }
 
-class RngState extends State<Rng> {
+class RngState extends State<Rng> with TickerProviderStateMixin {
   RngBloc? bloc;
   final numberListItemSize = const Size(50, 50);
 
-  Number _getRolledNumberWidget(RolledNumberState state) {
+  Widget _getRolledNumberWidget(RolledNumberState state) {
     if (state is SuccessState) {
       return Number(state.numberPresentation.numberText);
     } else if (state is ErrorState) {
-      return Number(state.message);
+      return NumberStateInfoWidget(state.message);
     } else if (state is InitState) {
-      return Number(state.message);
+      return NumberStateInfoWidget(state.message);
     } else {
-      return Number((state as ErrorState).message);
+      return NumberStateInfoWidget((state as ErrorState).message);
     }
   }
 
@@ -36,6 +38,8 @@ class RngState extends State<Rng> {
   Widget build(BuildContext context) {
     ScrollController numberListScrollController = ScrollController();
     bloc ??= RngBlocProvider.of(context).bloc;
+    var rollNumberAnimationController = AnimationController(vsync: this);
+    var rollNumberAnimation = IntTween().animate(rollNumberAnimationController);
 
     return Scaffold(
       backgroundColor: Colors.redAccent,
@@ -68,7 +72,9 @@ class RngState extends State<Rng> {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(200)),
                       child: snapshot.data != null
-                          ? _getRolledNumberWidget(snapshot.data!)
+                          ? AnimatedBuilder(animation: rollNumberAnimation, builder: (context, child) {
+                            return _getRolledNumberWidget(snapshot.data!);
+                          },)
                           : null,
                       onTap: () {
                         bloc?.generateRandomNumber();
@@ -91,15 +97,11 @@ class RngState extends State<Rng> {
                 crossAxisCount: 6,
                 controller: numberListScrollController,
                 children: bloc?.rolledNumberList.map((numberPresentation) {
-                      return SizedBox(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Number(
-                            numberPresentation.numberText,
-                          ),
+                      return Align(
+                        alignment: Alignment.center,
+                        child: Number(
+                          numberPresentation.numberText,
                         ),
-                        width: numberListItemSize.width,
-                        height: numberListItemSize.height,
                       );
                     }).toList() ??
                     [],
