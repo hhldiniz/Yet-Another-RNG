@@ -24,7 +24,10 @@ class RngState extends State<Rng> with TickerProviderStateMixin {
 
   Widget _getRolledNumberWidget(RolledNumberState state) {
     if (state is SuccessState) {
-      return Number(state.numberPresentation.numberText);
+      return Number(
+        oldValue: state.numberPresentation.oldValue,
+        newValue: state.numberPresentation.rolledNumber,
+      );
     } else if (state is ErrorState) {
       return NumberStateInfoWidget(state.message);
     } else if (state is InitState) {
@@ -38,8 +41,6 @@ class RngState extends State<Rng> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     ScrollController numberListScrollController = ScrollController();
     bloc ??= RngBlocProvider.of(context).bloc;
-    var rollNumberAnimationController = AnimationController(vsync: this);
-    var rollNumberAnimation = IntTween().animate(rollNumberAnimationController);
 
     return Scaffold(
       backgroundColor: Colors.redAccent,
@@ -72,9 +73,7 @@ class RngState extends State<Rng> with TickerProviderStateMixin {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(200)),
                       child: snapshot.data != null
-                          ? AnimatedBuilder(animation: rollNumberAnimation, builder: (context, child) {
-                            return _getRolledNumberWidget(snapshot.data!);
-                          },)
+                          ? _getRolledNumberWidget(snapshot.data!)
                           : null,
                       onTap: () {
                         bloc?.generateRandomNumber();
@@ -100,7 +99,8 @@ class RngState extends State<Rng> with TickerProviderStateMixin {
                       return Align(
                         alignment: Alignment.center,
                         child: Number(
-                          numberPresentation.numberText,
+                          oldValue: numberPresentation.oldValue,
+                          newValue: numberPresentation.rolledNumber,
                         ),
                       );
                     }).toList() ??

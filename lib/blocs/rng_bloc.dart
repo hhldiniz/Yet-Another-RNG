@@ -8,10 +8,10 @@ import 'package:yet_another_rng/states/rolled_number_state.dart';
 
 class RngBloc extends BaseBloc {
   final StreamController<RolledNumberState> _numberController =
-      StreamController<RolledNumberState>();
+  StreamController<RolledNumberState>();
 
   final StreamController<NumberListPresentation> _numberListController =
-      StreamController<NumberListPresentation>();
+  StreamController<NumberListPresentation>();
 
   final List<NumberPresentation> rolledNumberList = [];
 
@@ -32,12 +32,17 @@ class RngBloc extends BaseBloc {
     } else {
       var randomNumber = Random().nextInt(maxRolledNumbers);
       var foundNumber = rolledNumberList.advancedContains(
-              (NumberPresentation element) => element.rolledNumber == randomNumber);
+              (NumberPresentation element) =>
+          element.rolledNumber == randomNumber);
       if (foundNumber == null) {
-        var numberPresentation = NumberPresentation(randomNumber);
+        var oldValue = rolledNumberList.isNotEmpty ? rolledNumberList.last
+            .rolledNumber : null;
+        var numberPresentation = NumberPresentation(
+            oldValue: oldValue, rolledNumber: randomNumber);
         _numberController.sink.add(SuccessState(numberPresentation));
         rolledNumberList.add(numberPresentation);
-        _numberListController.sink.add(NumberListPresentation(rolledNumberList));
+        _numberListController.sink.add(
+            NumberListPresentation(rolledNumberList));
       } else {
         generateRandomNumber();
       }
