@@ -55,7 +55,7 @@ class _NumberTextState extends AnimatedWidgetBaseState<NumberText> {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '${_number.evaluate(animation)}',
+      _number.evaluate(animation).toString().padLeft(2, '0'),
       style: const TextStyle(
         color: Colors.black,
       ),

@@ -3,17 +3,17 @@ import 'dart:math';
 
 import 'package:yet_another_rng/blocs/base_bloc.dart';
 import 'package:yet_another_rng/presentations/number_list_presentation.dart';
-import 'package:yet_another_rng/presentations/number_presentation.dart';
 import 'package:yet_another_rng/states/rolled_number_state.dart';
+import 'package:yet_another_rng/widgets/number.dart';
 
 class RngBloc extends BaseBloc {
   final StreamController<RolledNumberState> _numberController =
-  StreamController<RolledNumberState>();
+      StreamController<RolledNumberState>();
 
   final StreamController<NumberListPresentation> _numberListController =
-  StreamController<NumberListPresentation>();
+      StreamController<NumberListPresentation>();
 
-  final List<NumberPresentation> rolledNumberList = [];
+  final List<Number> rolledNumberList = [];
 
   final int maxRolledNumbers = 100;
 
@@ -32,17 +32,18 @@ class RngBloc extends BaseBloc {
     } else {
       var randomNumber = Random().nextInt(maxRolledNumbers);
       var foundNumber = rolledNumberList.advancedContains(
-              (NumberPresentation element) =>
-          element.rolledNumber == randomNumber);
+          (Number element) => element.newValue == randomNumber);
       if (foundNumber == null) {
-        var oldValue = rolledNumberList.isNotEmpty ? rolledNumberList.last
-            .rolledNumber : null;
-        var numberPresentation = NumberPresentation(
-            oldValue: oldValue, rolledNumber: randomNumber);
+        var oldValue =
+            rolledNumberList.isNotEmpty ? rolledNumberList.last.newValue : null;
+        var numberPresentation = Number(
+          oldValue: oldValue,
+          newValue: randomNumber,
+        );
         _numberController.sink.add(SuccessState(numberPresentation));
         rolledNumberList.add(numberPresentation);
-        _numberListController.sink.add(
-            NumberListPresentation(rolledNumberList));
+        _numberListController.sink
+            .add(NumberListPresentation(rolledNumberList));
       } else {
         generateRandomNumber();
       }

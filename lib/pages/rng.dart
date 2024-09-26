@@ -25,8 +25,8 @@ class RngState extends State<Rng> with TickerProviderStateMixin {
   Widget _getRolledNumberWidget(RolledNumberState state) {
     if (state is SuccessState) {
       return Number(
-        oldValue: state.numberPresentation.oldValue,
-        newValue: state.numberPresentation.rolledNumber,
+        oldValue: state.number.oldValue,
+        newValue: state.number.newValue,
       );
     } else if (state is ErrorState) {
       return NumberStateInfoWidget(state.message);
@@ -100,7 +100,7 @@ class RngState extends State<Rng> with TickerProviderStateMixin {
                         alignment: Alignment.center,
                         child: Number(
                           oldValue: numberPresentation.oldValue,
-                          newValue: numberPresentation.rolledNumber,
+                          newValue: numberPresentation.newValue,
                         ),
                       );
                     }).toList() ??

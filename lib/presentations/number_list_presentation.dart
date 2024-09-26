@@ -1,7 +1,7 @@
-import 'package:yet_another_rng/presentations/number_presentation.dart';
+import 'package:yet_another_rng/widgets/number.dart';
 
 class NumberListPresentation {
-  List<NumberPresentation> numberList;
+  List<Number> numberList;
 
   NumberListPresentation(this.numberList);
 }

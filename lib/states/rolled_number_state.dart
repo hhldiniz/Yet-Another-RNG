@@ -1,13 +1,13 @@
-import 'package:yet_another_rng/presentations/number_presentation.dart';
+import 'package:yet_another_rng/widgets/number.dart';
 
 abstract class RolledNumberState {
 
 }
 
 class SuccessState implements RolledNumberState {
-  NumberPresentation numberPresentation;
+  Number number;
 
-  SuccessState(this.numberPresentation);
+  SuccessState(this.number);
 }
 
 class ErrorState implements RolledNumberState {
