@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yet_another_rng/blocs/settings_bloc.dart';
+import 'package:yet_another_rng/models/settings.dart';
 import 'package:yet_another_rng/providers/settings_bloc_provider.dart';
 import 'package:yet_another_rng/widgets/text_input.dart';
 
@@ -33,17 +34,21 @@ class SettingPageState extends State<SettingsPage> {
     TextEditingController maximumValueFieldController = TextEditingController();
 
     return Scaffold(
-      body: Form(
+        body: SafeArea(
+      child: Form(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text("Intervalo"),
-          StreamBuilder<int>(
-            stream: bloc?.minimum,
+          const Text(
+            "Intervalo",
+            style: TextStyle(fontSize: 24),
+          ),
+          StreamBuilder<Settings>(
+            stream: bloc?.settings,
             builder: (context, snapshot) {
               minimumValueFieldController.value = minimumValueFieldController
                   .value
-                  .copyWith(text: bloc?.minimumValue.toString());
+                  .copyWith(text: snapshot.data?.minimum.toString());
 
               return Padding(
                 padding: const EdgeInsets.all(8),
@@ -57,12 +62,12 @@ class SettingPageState extends State<SettingsPage> {
               );
             },
           ),
-          StreamBuilder<int>(
-            stream: bloc?.maximum,
+          StreamBuilder<Settings>(
+            stream: bloc?.settings,
             builder: (context, snapshot) {
               maximumValueFieldController.value = maximumValueFieldController
                   .value
-                  .copyWith(text: bloc?.maximumValue.toString());
+                  .copyWith(text: snapshot.data?.maximum.toString());
               return Padding(
                 padding: const EdgeInsets.all(8),
                 child: CustomTextInput(
@@ -77,6 +82,7 @@ class SettingPageState extends State<SettingsPage> {
           ),
           Expanded(
               child: Align(
+            alignment: Alignment.bottomCenter,
             child: Padding(
               padding: const EdgeInsets.all(8),
               child: SizedBox(
@@ -86,8 +92,10 @@ class SettingPageState extends State<SettingsPage> {
                     style: ButtonStyle(
                         backgroundColor: WidgetStateProperty.all(
                             Theme.of(context).primaryColor)),
-                    onPressed: () {
-                      Navigator.of(context).pop();
+                    onPressed: () async {
+                      var navigation = Navigator.of(context);
+                      await bloc?.save();
+                      navigation.pop();
                     },
                     child: const Text(
                       "OK",
@@ -95,11 +103,10 @@ class SettingPageState extends State<SettingsPage> {
                     )),
               ),
             ),
-            alignment: Alignment.bottomCenter,
           ))
         ],
       )),
-    );
+    ));
   }
 
   @override

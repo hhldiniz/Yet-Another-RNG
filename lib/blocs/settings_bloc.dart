@@ -2,39 +2,47 @@ import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yet_another_rng/blocs/base_bloc.dart';
+import 'package:yet_another_rng/models/settings.dart';
 
 class SettingsBloc extends BaseBloc {
+  final StreamController<Settings> _settings = StreamController.broadcast();
 
-  int? minimumValue;
-  int? maximumValue;
+  Stream<Settings> get settings => _settings.stream;
 
-  final StreamController<int> _minimum = StreamController();
-  final StreamController<int> _maximum = StreamController();
+  Settings _settingsValue = Settings();
 
-  Stream<int> get minimum => _minimum.stream;
-  Stream<int> get maximum => _maximum.stream;
-
-  save() async {
+  Future save() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt("minimum", await minimum.last);
-    await prefs.setInt("maximum", await maximum.last);
+
+    return await Future.wait([
+      prefs.setInt("minimum", _settingsValue.minimum ?? 0),
+      prefs.setInt("maximum", _settingsValue.maximum ?? 100)
+    ]);
+  }
+
+  _updateLocalSettings(Settings newSettings) {
+    _settings.sink.add(newSettings);
+    _settingsValue = newSettings;
   }
 
   updateMinimum(int newMinimum) {
-    minimumValue = newMinimum;
-    _minimum.sink.add(newMinimum);
+    var changedSettings = _settingsValue.copyWith(minimum: newMinimum);
+    _updateLocalSettings(changedSettings);
   }
 
   updateMaximum(int newMaximum) {
-    maximumValue = newMaximum;
-    _maximum.sink.add(newMaximum);
+    var changedSettings = _settingsValue.copyWith(maximum: newMaximum);
+    _updateLocalSettings(changedSettings);
   }
 
-  loadSettings(){
-    SharedPreferences.getInstance().then((prefs) {
-      updateMinimum(prefs.getInt("minimum") ?? 0);
-      updateMaximum(prefs.getInt("maximum") ?? 100);
-    },);
+  loadSettings() {
+    SharedPreferences.getInstance().then(
+      (prefs) {
+        _settings.add(_settingsValue.copyWith(
+            minimum: prefs.getInt("minimum") ?? 0,
+            maximum: prefs.getInt("maximum") ?? 100));
+      },
+    );
   }
 
   @override

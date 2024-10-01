@@ -2,11 +2,15 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:yet_another_rng/blocs/base_bloc.dart';
+import 'package:yet_another_rng/blocs/settings_bloc.dart';
 import 'package:yet_another_rng/presentations/number_list_presentation.dart';
 import 'package:yet_another_rng/states/rolled_number_state.dart';
 import 'package:yet_another_rng/widgets/number.dart';
 
 class RngBloc extends BaseBloc {
+
+  SettingsBloc settingsBloc;
+
   final StreamController<RolledNumberState> _numberController =
       StreamController<RolledNumberState>();
 
@@ -22,7 +26,7 @@ class RngBloc extends BaseBloc {
   Stream<NumberListPresentation> get numberListStream =>
       _numberListController.stream;
 
-  RngBloc() {
+  RngBloc(this.settingsBloc) {
     _numberController.sink.add(InitState("Toque para sortear um número."));
   }
 
