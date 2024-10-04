@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yet_another_rng/blocs/settings_bloc.dart';
-import 'package:yet_another_rng/models/settings.dart';
+import 'package:yet_another_rng/data/models/settings.dart';
 import 'package:yet_another_rng/providers/settings_bloc_provider.dart';
 import 'package:yet_another_rng/widgets/text_input.dart';
 
@@ -94,7 +94,6 @@ class SettingPageState extends State<SettingsPage> {
                             Theme.of(context).primaryColor)),
                     onPressed: () async {
                       var navigation = Navigator.of(context);
-                      await bloc?.save();
                       navigation.pop();
                     },
                     child: const Text(
