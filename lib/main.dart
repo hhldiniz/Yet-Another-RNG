@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yet_another_rng/blocs/settings_bloc.dart';
+import 'package:yet_another_rng/data/dao/settings_dao.dart';
 import 'package:yet_another_rng/pages/rng.dart';
 import 'package:yet_another_rng/providers/rng_bloc_provider.dart';
 import 'package:yet_another_rng/providers/settings_bloc_provider.dart';
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SettingsBlocProvider(RngBlocProvider(const Rng(), SettingsBloc())),
+      home: SettingsBlocProvider(RngBlocProvider(const Rng(), SettingsDao())),
     );
   }
 }

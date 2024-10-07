@@ -48,7 +48,8 @@ class _NumberTextState extends AnimatedWidgetBaseState<NumberText> {
 
   @override
   void initState() {
-    _number = IntTween(begin: widget.oldValue ?? 0, end: widget.newValue);
+    _number = IntTween(
+        begin: widget.oldValue ?? widget.newValue, end: widget.newValue);
     super.initState();
   }
 

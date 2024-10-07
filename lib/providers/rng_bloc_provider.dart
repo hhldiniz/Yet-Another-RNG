@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:yet_another_rng/blocs/rng_bloc.dart';
-import 'package:yet_another_rng/blocs/settings_bloc.dart';
+
+import '../data/dao/settings_dao.dart';
 
 class RngBlocProvider extends InheritedWidget {
   final RngBloc bloc;
 
-  RngBlocProvider(Widget child, SettingsBloc settingsBloc, {Key? key})
-      : bloc = RngBloc(settingsBloc),
+  RngBlocProvider(Widget child, SettingsDao settingsDao, {Key? key})
+      : bloc = RngBloc(settingsDao),
         super(child: child, key: key);
 
   @override
