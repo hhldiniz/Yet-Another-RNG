@@ -4,8 +4,7 @@ class Number extends StatelessWidget {
   final int newValue;
   final int? oldValue;
 
-  const Number({Key? key, required this.oldValue, required this.newValue})
-      : super(key: key);
+  const Number({super.key, required this.oldValue, required this.newValue});
 
   @override
   Widget build(BuildContext context) {
@@ -31,11 +30,10 @@ class NumberText extends ImplicitlyAnimatedWidget {
   final int? oldValue;
 
   const NumberText(
-      {Key? key,
-      required Duration duration,
+      {super.key,
+      required super.duration,
       required this.oldValue,
-      required this.newValue})
-      : super(key: key, duration: duration);
+      required this.newValue});
 
   @override
   ImplicitlyAnimatedWidgetState<ImplicitlyAnimatedWidget> createState() {

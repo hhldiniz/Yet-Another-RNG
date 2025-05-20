@@ -6,9 +6,9 @@ import '../data/dao/settings_dao.dart';
 class RngBlocProvider extends InheritedWidget {
   final RngBloc bloc;
 
-  RngBlocProvider(Widget child, SettingsDao settingsDao, {Key? key})
+  RngBlocProvider(Widget child, SettingsDao settingsDao, {super.key})
       : bloc = RngBloc(settingsDao),
-        super(child: child, key: key);
+        super(child: child);
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) {

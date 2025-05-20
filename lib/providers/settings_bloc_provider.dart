@@ -4,9 +4,9 @@ import 'package:yet_another_rng/blocs/settings_bloc.dart';
 class SettingsBlocProvider extends InheritedWidget {
   final SettingsBloc bloc;
 
-  SettingsBlocProvider(Widget child, {Key? key})
+  SettingsBlocProvider(Widget child, {super.key})
       : bloc = SettingsBloc(),
-        super(child: child, key: key);
+        super(child: child);
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) {

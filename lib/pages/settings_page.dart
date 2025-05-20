@@ -5,7 +5,7 @@ import 'package:yet_another_rng/providers/settings_bloc_provider.dart';
 import 'package:yet_another_rng/widgets/text_input.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  const SettingsPage({super.key});
 
   @override
   State<StatefulWidget> createState() {

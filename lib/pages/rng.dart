@@ -10,7 +10,7 @@ import 'package:yet_another_rng/widgets/number.dart';
 import '../widgets/number_state_info.dart';
 
 class Rng extends StatefulWidget {
-  const Rng({Key? key}) : super(key: key);
+  const Rng({super.key});
 
   @override
   State<StatefulWidget> createState() {

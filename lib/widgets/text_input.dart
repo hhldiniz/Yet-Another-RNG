@@ -7,12 +7,11 @@ class CustomTextInput extends StatelessWidget {
   final TextInputType? inputType;
 
   const CustomTextInput(
-      {Key? key,
+      {super.key,
       this.controller,
       this.onChanged,
       this.labelText,
-      this.inputType})
-      : super(key: key);
+      this.inputType});
 
   @override
   Widget build(BuildContext context) {
