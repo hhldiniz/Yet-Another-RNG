@@ -48,7 +48,7 @@ class SettingPageState extends State<SettingsPage> {
             builder: (context, snapshot) {
               minimumValueFieldController.value = minimumValueFieldController
                   .value
-                  .copyWith(text: snapshot.data?.minimum.toString());
+                  .copyWith(text: (snapshot.data?.minimum ?? 0).toString());
 
               return Padding(
                 padding: const EdgeInsets.all(8),
@@ -67,7 +67,7 @@ class SettingPageState extends State<SettingsPage> {
             builder: (context, snapshot) {
               maximumValueFieldController.value = maximumValueFieldController
                   .value
-                  .copyWith(text: snapshot.data?.maximum.toString());
+                  .copyWith(text: (snapshot.data?.maximum ?? 100).toString());
               return Padding(
                 padding: const EdgeInsets.all(8),
                 child: CustomTextInput(
