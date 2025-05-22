@@ -20,6 +20,7 @@ class RngBloc extends BaseBloc {
 
   final List<Number> rolledNumberList = [];
 
+  int minRolledNumbers = 0;
   int maxRolledNumbers = 100;
 
   Stream<RolledNumberState> get numberStream => _numberController.stream;
@@ -30,6 +31,7 @@ class RngBloc extends BaseBloc {
   RngBloc(this._settingsDao) {
     _numberController.sink.add(InitState("Toque para sortear um número."));
     _settingsDao.query().then((value) {
+      minRolledNumbers = value.first.minimum ?? 0;
       maxRolledNumbers = value.first.maximum ?? 100;
     },);
   }
@@ -38,7 +40,7 @@ class RngBloc extends BaseBloc {
     if (rolledNumberList.length == maxRolledNumbers) {
       _numberController.sink.add(ErrorState("Todos já foram sorteados."));
     } else {
-      var randomNumber = Random().nextInt(maxRolledNumbers);
+      var randomNumber = Random().nextInt(maxRolledNumbers) + minRolledNumbers;
       var foundNumber = rolledNumberList.advancedContains(
           (Number element) => element.newValue == randomNumber);
       if (foundNumber == null) {
